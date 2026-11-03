@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMAAN - WinGo 30S - Mine</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#fff;font-family:Arial}
+.top{background:linear-gradient(90deg,#FF8A65,#FF5252);padding:14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}
+.logo{font-weight:900;font-size:18px;line-height:1;color:#fff}
+.live{font-size:10px;padding:6px 12px;border-radius:20px;font-weight:900;background:#00C853}
+.card{background:linear-gradient(180deg,#FFE0B2,#FFCC80);border-radius:16px;margin:12px;padding:16px;color:#000;position:relative}
+.timer{position:absolute;right:16px;top:16px;display:flex;gap:2px}
+.tbox{width:32px;height:40px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:900;font-size:22px}
+.period{font-weight:900;font-size:14px;margin-top:12px;background:#fff;padding:10px 14px;border-radius:10px;border:2px solid #4CAF50;word-break:break-all}
+.colors{display:flex;gap:10px;margin-top:14px}
+.col{flex:1;padding:14px;border-radius:12px;text-align:center;font-weight:900;cursor:pointer;color:#fff}
+.col.green{background:linear-gradient(135deg,#4CAF50,#2E7D32)}.col.violet{background:linear-gradient(135deg,#AB47BC,#6A1B9A)}.col.red{background:linear-gradient(135deg,#EF5350,#C62828)}
+.balls{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.ball{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;color:#000;border:3px solid #ccc}
+.ball.green{border-color:#4CAF50;color:#4CAF50}.ball.red{border-color:#EF5350;color:#EF5350}.ball.violet{border-color:#9C27B0;color:#9C27B0}
+.bs{display:flex;gap:12px;margin:14px}.bsb{flex:1;padding:16px;border-radius:14px;text-align:center;font-weight:900;font-size:16px;cursor:pointer}
+.bsb.big{background:linear-gradient(135deg,#FFB74D,#FF9800);color:#000}.bsb.small{background:linear-gradient(135deg,#64B5F6,#1976D2);color:#fff}
+.mult{display:flex;gap:8px;margin:12px;overflow-x:auto}.m{padding:8px 16px;border-radius:20px;background:#222;color:#fff;border:1px solid #444;white-space:nowrap}.m.active{background:#4CAF50;color:#000;font-weight:800}
+.bet{width:calc(100% - 24px);margin:12px;padding:16px;background:linear-gradient(90deg,#FFD54A,#FFA726);color:#000;border:none;border-radius:14px;font-weight:900;font-size:16px}
+.table{background:#1e1e1e;border-radius:12px;margin:12px;overflow:hidden}
+.thead{background:#FF5252;display:flex;padding:12px;font-size:11px;font-weight:800}
+.row{display:flex;padding:12px;font-size:12px;border-bottom:1px solid #333}
+</style>
+</head>
+<body>
+<div class="top"><div class="logo">ONWER-OFFICIAL-AMAAN<br><span style="font-size:10px;opacity:.8">WinGo 30S - MINE - FIXED</span></div><div class="live" id="live">● LIVE - FIXED</div></div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between">
+<div style="background:#000;color:#fff;padding:6px 12px;border-radius:20px;font-size:10px;font-weight:800">WinGo 30S - Mine Version</div>
+<div style="text-align:right"><div style="font-size:10px;font-weight:800">Time Remaining - 30S</div><div class="timer"><div class="tbox">0</div><div class="tbox">0</div><div style="font-weight:900">:</div><div class="tbox" id="t1">3</div><div class="tbox" id="t2">0</div></div></div>
+</div>
+<div style="margin-top:60px">
+<div style="font-size:11px;font-weight:800">Period Number - Correct Raxi Style</div>
+<div class="period" id="period">Period: Loading... Fixed Version</div>
+<div style="font-size:10px;margin-top:6px">Ye period Raxi se exact same ayega, Loading nahi</div>
+<div style="font-size:11px;font-weight:800;margin-top:12px">Number - Last 5 Results</div>
+<div class="balls" id="topBalls"></div>
+</div>
+</div>
+
+<div class="colors">
+<div class="col green" onclick="selColor('green')">Green</div>
+<div class="col violet" onclick="selColor('violet')">Violet</div>
+<div class="col red" onclick="selColor('red')">Red</div>
+</div>
+
+<div class="bs">
+<div class="bsb big" id="bigBtn" onclick="selBS('big')">BIG<br><span style="font-size:10px">5-9</span></div>
+<div class="bsb small" id="smallBtn" onclick="selBS('small')">SMALL<br><span style="font-size:10px">0-4</span></div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px" id="numGrid"></div>
+
+<div class="mult"><div class="m active" onclick="setM(this,1)">X1</div><div class="m" onclick="setM(this,5)">X5</div><div class="m" onclick="setM(this,10)">X10</div><div class="m" onclick="setM(this,20)">X20</div><div class="m" onclick="setM(this,50)">X50</div><div class="m" onclick="setM(this,100)">X100</div></div>
+
+<button class="bet" onclick="bet()">BET - Lagao - WinGo 30S</button>
+
+<div class="table"><div class="thead"><div style="flex:1.5">Period</div><div>Number</div><div>Color</div><div>Big/Small</div></div><div id="hBody"></div></div>
+
+<script>
+let history=[],timer=30,selected=null,mult=1;
+let lastIssue='';
+
+function gBS(n){return n<=4?'Small':'Big';}
+function gColor(n){
+ n=parseInt(n);
+ if(n==0||n==5) return {name:'Violet',c:'#9C27B0',bg:'violet'};
+ if([1,3,7,9].includes(n)) return {name:'Green',c:'#4CAF50',bg:'green'};
+ return {name:'Red',c:'#EF5350',bg:'red'};
+}
+
+function getPeriod30S(){
+ // WinGo 30S: every 30 sec
+ // Formula: YYYYMMDD + 10001 + (hours*120 + mins*2 + (sec>=30?1:0) + offset)
+ // Offset 391 for Raxi sync as per 1Min analysis
+ let now=new Date();
+ let y=now.getFullYear(), mo=String(now.getMonth()+1).padStart(2,'0'), d=String(now.getDate()).padStart(2,'0');
+ let seq=now.getHours()*120 + now.getMinutes()*2 + (now.getSeconds()>=30?1:0) + 782; // 391*2 for 30S
+ return `${y}${mo}${d}10001${String(10000+seq).padStart(5,'0')}`;
+}
+
+function tick(){
+ timer--;
+ if(timer<0){timer=30; fetchReal();}
+ let s=String(timer).padStart(2,'0');
+ document.getElementById('t1').innerText=s[0];
+ document.getElementById('t2').innerText=s[1];
+}
+
+function render(){
+ let tb=document.getElementById('topBalls'); tb.innerHTML='';
+ history.slice(0,5).forEach(h=>{
+  let c=gColor(h.number);
+  tb.innerHTML+=`<div class="ball ${c.bg}">${h.number}</div>`;
+ });
+ let hb=document.getElementById('hBody'); hb.innerHTML='';
+ history.slice(0,10).forEach(h=>{
+  let c=gColor(h.number);
+  hb.innerHTML+=`<div class="row"><div style="flex:1.5;font-size:10px">${h.period.slice(-6)}</div><div style="color:${c.c};font-weight:900">${h.number}</div><div style="color:${c.c}">${c.name}</div><div style="color:${h.bs=='Big'?'#FFB74D':'#64B5F6'}">${h.bs}</div></div>`;
+ });
+ let grid=document.getElementById('numGrid'); if(grid.innerHTML==''){
+  for(let i=0;i<=9;i++){
+   let c=gColor(i);
+   grid.innerHTML+=`<div style="width:100%;aspect-ratio:1;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;border:3px solid ${c.c};color:${c.c};cursor:pointer" onclick="selNum(${i})">${i}</div>`;
+  }
+ }
+}
+
+async function fetchReal(){
+ try{
+  let urls=[
+   'https://api.allorigins.win/raw?url='+encodeURIComponent('https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?_t='+Date.now()),
+   'https://corsproxy.io/?'+encodeURIComponent('https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json')
+  ];
+  for(let u of urls){
+   try{
+    let r=await fetch(u); let j=await r.json();
+    if(typeof j==='string') j=JSON.parse(j);
+    if(!j.data || !j.data.list || j.data.list.length==0) continue;
+    let latest=j.data.list[0];
+    let nextP=(BigInt(latest.issueNumber)+1n).toString();
+    document.getElementById('period').innerText='Period: '+nextP+' (Real - WinGo 30S)';
+    document.getElementById('period').style.background='#e8f5e9';
+    history=[];
+    j.data.list.slice(0,10).forEach(it=>{history.push({period:it.issueNumber,number:parseInt(it.number),bs:gBS(parseInt(it.number))});});
+    render();
+    lastIssue=latest.issueNumber;
+    let now=new Date(); timer=30-now.getSeconds()%30; if(timer==0) timer=30;
+    document.getElementById('live').innerText='● LIVE - REAL 30S';
+    document.getElementById('live').style.background='#00C853';
+    return;
+   }catch(e){continue;}
+  }
+  throw new Error('fail');
+ }catch(e){
+  document.getElementById('live').innerText='● DEMO - FIXED 30S';
+  document.getElementById('live').style.background='#FF9800';
+  let per=getPeriod30S();
+  document.getElementById('period').innerText='Period: '+per+' (Fixed - 30S - Mine)';
+  if(history.length==0){
+   for(let i=0;i<8;i++){
+    let n=Math.floor(Math.random()*10);
+    let dt=new Date(Date.now()-i*30000);
+    let y=dt.getFullYear(), mo=String(dt.getMonth()+1).padStart(2,'0'), d=String(dt.getDate()).padStart(2,'0');
+    let seq=dt.getHours()*120+dt.getMinutes()*2+(dt.getSeconds()>=30?1:0)+782;
+    let p=`${y}${mo}${d}10001${String(10000+seq).padStart(5,'0')}`;
+    history.push({period:p,number:n,bs:gBS(n)});
+   }
+   render();
+  }
+ }
+}
+
+function selColor(c){selected=c; alert('Selected: '+c.toUpperCase());}
+function selBS(b){selected=b; document.getElementById('bigBtn').style.border=b=='big'?'3px solid #FFD54A':'none'; document.getElementById('smallBtn').style.border=b=='small'?'3px solid #FFD54A':'none';}
+function selNum(n){selected=n; alert('Selected Number: '+n);}
+function setM(el,m){document.querySelectorAll('.m').forEach(x=>x.classList.remove('active')); el.classList.add('active'); mult=m;}
+function bet(){if(!selected){alert('Pehle Big/Small ya Number select karo');return;} alert('Bet placed: '+selected+' X'+mult+'\nPeriod: '+document.getElementById('period').innerText+'\nResult ka wait karo...');}
+
+fetchReal();
+setInterval(tick,1000);
+setInterval(fetchReal,15000);
+</script>
+</body>
+</html>
